@@ -1,4 +1,4 @@
-import { call, put, takeEvery } from "redux-saga/effects";
+import { call, put, takeEvery, spawn } from "redux-saga/effects";
 import axios from "axios";
 import * as actions from "./actions";
 import * as actionTypes from "./actionTypes";
@@ -21,4 +21,8 @@ function* fetchUserSaga() {
   yield takeEvery(actionTypes.SAGA_FETCH_USER_INIT, fetchUser);
 }
 
-export default fetchUserSaga;
+function* rootSaga() {
+  yield spawn(fetchUserSaga);
+}
+
+export default rootSaga;
