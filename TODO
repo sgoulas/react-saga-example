@@ -1,0 +1,5 @@
+installation tasks:
+    ☐ configure jest
+
+dev tasks:
+    ☐ test fetch user saga
