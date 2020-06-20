@@ -40,18 +40,16 @@ export const sagaFetchUserFail = () => {
   };
 };
 
-export const thunkFetchUser = (url) => {
-  return (dispatch) => {
-    dispatch(fetchUserIncrementalInit());
-    axios
-      .get(url)
-      .then((response) => {
-        const { data } = response;
-        dispatch(fetchUserIncrementalSuccess(data));
-      })
-      .catch((error) => {
-        dispatch(fetchUserIncrementalFail());
-        console.error(error);
-      });
-  };
+export const thunkFetchUser = (url) => (dispatch) => {
+  dispatch(fetchUserIncrementalInit());
+  axios
+    .get(url)
+    .then((response) => {
+      const { data } = response;
+      dispatch(fetchUserIncrementalSuccess(data));
+    })
+    .catch((error) => {
+      dispatch(fetchUserIncrementalFail());
+      console.error(error);
+    });
 };
