@@ -23,8 +23,8 @@ export function* fetchUserSaga() {
 
 function* logger(action) {
   const state = yield select();
-  console.log("action", action);
-  console.log("state after", state);
+  console.log("[logger] action", action);
+  console.log("[logger] state after", state);
 }
 
 function* watchAndLog() {
@@ -35,13 +35,27 @@ function* watchFirstThreeFetches() {
   for (let i = 0; i < 3; i++) {
     yield take(actionTypes.SAGA_FETCH_USER_SUCCESS);
   }
-  console.log("The three first users where successfully fetched");
+  console.log(
+    "[watchFirstThreeFetches] The three first users where successfully fetched"
+  );
+}
+
+function* fetchFlow() {
+  while (true) {
+    yield take(actionTypes.SAGA_FETCH_USER_INIT);
+    console.log("[fetchFlow] initialized fetching");
+    yield take(actionTypes.SAGA_FETCH_USER_SUCCESS);
+    console.log("[fetchFlow] fetching success");
+    yield take(actionTypes.SAGA_FETCH_USER_FAIL);
+    console.log("[fetchFlow] fetching error");
+  }
 }
 
 function* rootSaga() {
   yield spawn(fetchUserSaga);
   yield spawn(watchAndLog);
   yield spawn(watchFirstThreeFetches);
+  yield spawn(fetchFlow);
 }
 
 export default rootSaga;
