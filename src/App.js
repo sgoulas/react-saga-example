@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import * as fetchActions from "./store/actions";
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
 
 const App = () => {
   const dispatch = useDispatch();
-  const fetchedUsers = useSelector((state) => state.users);
   const [userID, setUserID] = useState(1);
   const url = `https://jsonplaceholder.typicode.com/todos/${userID}`;
 
@@ -41,10 +42,6 @@ const App = () => {
     incrementUserID();
   };
 
-  const usersJSX = fetchedUsers.map((fetchedUser) => (
-    <li>{fetchedUser.title}</li>
-  ));
-
   return (
     <div className="App">
       <header className="App-header">
@@ -73,19 +70,45 @@ const App = () => {
           </p>
         </div>
         <img src={logo} className="App-logo" alt="logo" />
-        <button onClick={handleButtonClick} type="button">
-          Fetch User
-        </button>
-        <br />
-        <button onClick={handleThunkButtonClick} type="button">
-          Fetch User (thunk way)
-        </button>
-        <br />
-        <button onClick={handleSagaButtonClick} type="button">
-          Fetch User (saga way)
-        </button>
-        <br />
-        {fetchedUsers && <ul>{usersJSX}</ul>}
+
+        <Grid
+          container
+          direction="row"
+          justify="center"
+          alignItems="center"
+          spacing={3}
+        >
+          <Grid item>
+            <Button
+              variant="contained"
+              color="primary"
+              component="span"
+              onClick={handleButtonClick}
+            >
+              Fetch User
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              variant="contained"
+              color="primary"
+              component="span"
+              onClick={handleThunkButtonClick}
+            >
+              Fetch User (thunk)
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              variant="contained"
+              color="primary"
+              component="span"
+              onClick={handleSagaButtonClick}
+            >
+              Fetch User (saga)
+            </Button>
+          </Grid>
+        </Grid>
       </header>
     </div>
   );

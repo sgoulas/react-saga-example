@@ -1,4 +1,4 @@
-import { call, put, takeEvery, spawn } from "redux-saga/effects";
+import { call, put, takeEvery, spawn, select } from "redux-saga/effects";
 import { getUser } from "../fetchApi/fetchApi.js";
 import * as actions from "./actions";
 import * as actionTypes from "./actionTypes";
@@ -21,8 +21,19 @@ export function* fetchUserSaga() {
   yield takeEvery(actionTypes.SAGA_FETCH_USER_INIT, fetchUser);
 }
 
+function* logger(action) {
+  const state = yield select();
+  console.log("action", action);
+  console.log("state after", state);
+}
+
+function* watchAndLog() {
+  yield takeEvery("*", logger);
+}
+
 function* rootSaga() {
   yield spawn(fetchUserSaga);
+  yield spawn(watchAndLog);
 }
 
 export default rootSaga;
