@@ -1,5 +1,5 @@
 import * as actionTypes from "./actionTypes.js";
-import axios from "axios";
+import { getUser } from "../fetchApi/fetchApi.js";
 
 export const fetchUserIncrementalInit = () => {
   return {
@@ -42,8 +42,7 @@ export const sagaFetchUserFail = () => {
 
 export const thunkFetchUser = (url) => (dispatch) => {
   dispatch(fetchUserIncrementalInit());
-  axios
-    .get(url)
+  getUser(url)
     .then((response) => {
       const { data } = response;
       dispatch(fetchUserIncrementalSuccess(data));

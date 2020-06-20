@@ -1,5 +1,5 @@
 import { call, put, takeEvery, spawn } from "redux-saga/effects";
-import axios from "axios";
+import { getUser } from "../fetchApi/fetchApi.js";
 import * as actions from "./actions";
 import * as actionTypes from "./actionTypes";
 
@@ -8,7 +8,7 @@ import * as actionTypes from "./actionTypes";
 function* fetchUser(action) {
   const { payload: url } = action;
   try {
-    const user = yield call(axios.get, url);
+    const user = yield call(getUser, url);
     yield put(actions.sagaFetchUserSuccess(user.data));
   } catch (error) {
     yield put(actions.sagaFetchUserFail());
