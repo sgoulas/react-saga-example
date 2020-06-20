@@ -42,6 +42,19 @@ const App = () => {
     incrementUserID();
   };
 
+  const handleSagaButtonClickWithTimeout = () => {
+    dispatch(fetchActions.fetchUserWithTimeoutInit(url));
+    incrementUserID();
+  };
+
+  const handleFetchTwoUsersRace = () => {
+    const payLoad = {
+      firstUserUrl: "https://jsonplaceholder.typicode.com/todos/1",
+      secondUserUrl: "https://jsonplaceholder.typicode.com/todos/2",
+    };
+    dispatch(fetchActions.fetchTwoUsersRace(payLoad));
+  };
+
   return (
     <div className="App">
       <header className="App-header">
@@ -106,6 +119,26 @@ const App = () => {
               onClick={handleSagaButtonClick}
             >
               Fetch User (saga)
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              variant="contained"
+              color="primary"
+              component="span"
+              onClick={handleSagaButtonClickWithTimeout}
+            >
+              Fetch User (saga + timeout)
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              variant="contained"
+              color="primary"
+              component="span"
+              onClick={handleFetchTwoUsersRace}
+            >
+              Fetch Two Users (saga + race)
             </Button>
           </Grid>
         </Grid>

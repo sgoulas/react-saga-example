@@ -52,3 +52,35 @@ export const thunkFetchUser = (url) => (dispatch) => {
       console.error(error);
     });
 };
+
+export const fetchUserWithTimeoutInit = (payload) => {
+  return {
+    type: actionTypes.SAGA_FETCH_USER_WITH_TIMEOUT_INIT,
+    payload,
+  };
+};
+
+export const fetchUserTimeoutError = () => {
+  return {
+    type: actionTypes.SAGA_FETCH_USER_TIMEOUT_ERROR,
+  };
+};
+
+export const fetchTwoUsersRace = (payload) => {
+  return {
+    type: actionTypes.SAGA_FETCH_TWO_USERS_RACE,
+    payload,
+  };
+};
+
+export const notifyFirstUserWin = () => {
+  return {
+    type: actionTypes.FIRST_USER_WINS,
+  };
+};
+
+export const notifySecondUserWin = () => {
+  return {
+    type: actionTypes.SECOND_USER_WINS,
+  };
+};
