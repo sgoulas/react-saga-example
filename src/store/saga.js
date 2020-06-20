@@ -5,7 +5,7 @@ import * as actionTypes from "./actionTypes";
 
 // worker, will be started on SAGA_FETCH_USER_INIT
 
-function* fetchUser(action) {
+export function* fetchUser(action) {
   const { payload: url } = action;
   try {
     const user = yield call(getUser, url);
@@ -17,7 +17,7 @@ function* fetchUser(action) {
 
 // starts fetchUser on each dispatched SAGA_FETCH_USER_INIT
 
-function* fetchUserSaga() {
+export function* fetchUserSaga() {
   yield takeEvery(actionTypes.SAGA_FETCH_USER_INIT, fetchUser);
 }
 
