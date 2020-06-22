@@ -7,6 +7,9 @@ import {
   take,
   race,
   delay,
+  cancel,
+  fork,
+  cancelled,
 } from "redux-saga/effects";
 import { getUser } from "../fetchApi/fetchApi.js";
 import * as actions from "./actions";
@@ -108,6 +111,26 @@ function* fetchTwoUsersRaceSaga() {
   yield takeEvery(actionTypes.SAGA_FETCH_TWO_USERS_RACE, fetchTwoUsersRace);
 }
 
+function* expensiveFunction() {
+  try {
+    yield delay(3000);
+    yield put(actions.expensiveTaskCompleted());
+  } finally {
+    if (yield cancelled()) {
+      yield put(actions.expensiveTaskCanceled());
+    }
+  }
+}
+
+function* expensiveTaskSaga() {
+  while (yield take(actionTypes.EXPENSIVE_TASK_INIT)) {
+    const expensiveTask = yield fork(expensiveFunction);
+
+    yield take(actionTypes.EXPENSIVE_TASK_CANCEL);
+    yield cancel(expensiveTask);
+  }
+}
+
 function* rootSaga() {
   yield spawn(fetchUserSaga);
   yield spawn(fetchUserWithTimeOutSaga);
@@ -115,6 +138,7 @@ function* rootSaga() {
   yield spawn(watchFirstThreeFetches);
   yield spawn(fetchFlow);
   yield spawn(fetchTwoUsersRaceSaga);
+  yield spawn(expensiveTaskSaga);
 }
 
 export default rootSaga;

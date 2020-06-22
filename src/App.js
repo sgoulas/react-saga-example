@@ -2,14 +2,17 @@ import React, { useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import axios from "axios";
-import { useDispatch } from "react-redux";
-import * as fetchActions from "./store/actions";
+import { useDispatch, useSelector } from "react-redux";
+import * as actions from "./store/actions";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 
 const App = () => {
   const dispatch = useDispatch();
   const [userID, setUserID] = useState(1);
+  const isExpensiveTaskRunning = useSelector(
+    (state) => state.isExpensiveTaskRunning
+  );
   const url = `https://jsonplaceholder.typicode.com/todos/${userID}`;
 
   const incrementUserID = () => {
@@ -18,32 +21,32 @@ const App = () => {
   };
 
   const handleButtonClick = () => {
-    dispatch(fetchActions.fetchUserIncrementalInit());
+    dispatch(actions.fetchUserIncrementalInit());
     axios
       .get(url)
       .then((response) => {
         const { data } = response;
-        dispatch(fetchActions.fetchUserIncrementalSuccess(data));
+        dispatch(actions.fetchUserIncrementalSuccess(data));
         incrementUserID();
       })
       .catch((error) => {
-        dispatch(fetchActions.fetchUserIncrementalFail());
+        dispatch(actions.fetchUserIncrementalFail());
         console.error(error);
       });
   };
 
   const handleThunkButtonClick = () => {
-    dispatch(fetchActions.thunkFetchUser(url));
+    dispatch(actions.thunkFetchUser(url));
     incrementUserID();
   };
 
   const handleSagaButtonClick = () => {
-    dispatch(fetchActions.sagaFetchUserInit(url));
+    dispatch(actions.sagaFetchUserInit(url));
     incrementUserID();
   };
 
   const handleSagaButtonClickWithTimeout = () => {
-    dispatch(fetchActions.fetchUserWithTimeoutInit(url));
+    dispatch(actions.fetchUserWithTimeoutInit(url));
     incrementUserID();
   };
 
@@ -52,7 +55,15 @@ const App = () => {
       firstUserUrl: "https://jsonplaceholder.typicode.com/todos/1",
       secondUserUrl: "https://jsonplaceholder.typicode.com/todos/2",
     };
-    dispatch(fetchActions.fetchTwoUsersRace(payLoad));
+    dispatch(actions.fetchTwoUsersRace(payLoad));
+  };
+
+  const handleExpensiveTask = () => {
+    if (!isExpensiveTaskRunning) {
+      dispatch(actions.expensiveTaskInit());
+    } else {
+      dispatch(actions.expensiveTaskCancel());
+    }
   };
 
   return (
@@ -139,6 +150,18 @@ const App = () => {
               onClick={handleFetchTwoUsersRace}
             >
               Fetch Two Users (saga + race)
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              variant="contained"
+              color="primary"
+              component="span"
+              onClick={handleExpensiveTask}
+            >
+              {isExpensiveTaskRunning
+                ? "stop expensive task"
+                : "start expensive task"}
             </Button>
           </Grid>
         </Grid>

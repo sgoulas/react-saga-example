@@ -84,3 +84,19 @@ export const notifySecondUserWin = () => {
     type: actionTypes.SECOND_USER_WINS,
   };
 };
+
+export const expensiveTaskInit = () => {
+  return { type: actionTypes.EXPENSIVE_TASK_INIT };
+};
+
+export const expensiveTaskCancel = () => {
+  return { type: actionTypes.EXPENSIVE_TASK_CANCEL };
+};
+
+export const expensiveTaskCompleted = () => {
+  return { type: actionTypes.EXPENSIVE_TASK_COMPLETED };
+};
+
+export const expensiveTaskCanceled = () => {
+  return { type: actionTypes.EXPENSIVE_TASK_CANCELED };
+};

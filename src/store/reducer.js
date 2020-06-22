@@ -1,5 +1,6 @@
 import * as actionTypes from "./actionTypes.js";
 import { cloneDeep } from "lodash";
+import { expensiveTaskCancel } from "./actions.js";
 
 const updateObject = (oldObject, updatedObject) => {
   return {
@@ -11,6 +12,7 @@ const updateObject = (oldObject, updatedObject) => {
 const initialState = {
   isLoading: false,
   users: [],
+  isExpensiveTaskRunning: false,
 };
 
 // NORMAL
@@ -63,6 +65,14 @@ const sagaGetUsersFail = (state) => {
   return updateObject(state, newState);
 };
 
+const expensiveTaskInit = (state) => {
+  return updateObject(state, { isExpensiveTaskRunning: true });
+};
+
+const expensiveTaskStop = (state) => {
+  return updateObject(state, { isExpensiveTaskRunning: false });
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.FETCH_USER_INCREMENTAL_INIT:
@@ -78,6 +88,13 @@ const reducer = (state = initialState, action) => {
       return sagaGetUsersSuccess(state, action.payload);
     case actionTypes.SAGA_FETCH_USER_FAIL:
       return sagaGetUsersFail();
+
+    case actionTypes.EXPENSIVE_TASK_INIT:
+      return expensiveTaskInit(state);
+    case actionTypes.EXPENSIVE_TASK_COMPLETED:
+      return expensiveTaskStop(state);
+    case actionTypes.EXPENSIVE_TASK_CANCEL:
+      return expensiveTaskStop(state);
 
     default:
       return state;
