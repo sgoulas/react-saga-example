@@ -8,4 +8,4 @@ Also, `Jest` tests for my fetch data saga.
 
 ## Deployed App
 
-The app is currently deployed on https://sgoulas.github.io/react-saga-example/. The different network calls and actions dispatched can be seen in the browser's netowrk tab and redux dev tools respectively.
+The app is currently deployed on https://sgoulas.github.io/react-saga-example/. The different network calls and actions dispatched can be seen in the browser's network tab and redux dev tools plugin respectively.
